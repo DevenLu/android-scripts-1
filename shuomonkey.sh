@@ -1,12 +1,18 @@
 #!/bin/bash
 ###############################################################
-#########
-######### Name:		Monkey Script
-######### Project:	http://code.dapps.douban.com/zhangxiaoke/android-test
-######### Version:	1.0
-######### Date:		2013.09.03
-######### Author:	zhangxiaoke@douban.com
-#########
+##
+## Name:		Monkey Script
+## Project:		http://code.dapps.douban.com/zhangxiaoke/android-test
+## Version:		1.0
+## Date:		2013.09.03
+## Author:		zhangxiaoke@douban.com
+##
+###############################################################
+###############################################################
+#
+# Monkey测试脚本，遇到Crash会停止并收集报告
+# 延时60秒自动重新启动下一次测试
+#
 ###############################################################
 function run_monkey()
 {
@@ -50,6 +56,7 @@ function run_monkey()
 	echo ""
 }
 
+SLEEP_TIME=60
 PACKAGE=com.douban.shuo
 DEVICE=`adb devices | awk 'NR>1 {print $1}'`
 
@@ -61,4 +68,5 @@ echo "Device:" ${DEVICE}
 for((;;))
 do
 	run_monkey
+	sleep ${SLEEP_TIME}
 done
