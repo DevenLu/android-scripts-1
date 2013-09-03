@@ -1,5 +1,13 @@
 #!/bin/bash
-
+###############################################################
+#########
+######### Name:		Monkey Script
+######### Project:	http://code.dapps.douban.com/zhangxiaoke/android-test
+######### Version:	1.0
+######### Date:		2013.09.03
+######### Author:	zhangxiaoke@douban.com
+#########
+###############################################################
 function run_monkey()
 {
 	echo ""
