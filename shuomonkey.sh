@@ -1,20 +1,14 @@
 #!/bin/bash
 
-function device()
-{
-    devIndex=`expr "$1" + 1`
-    adb devices | head -$devIndex | tail -n 1 | awk '{print $1}'
-}
-
-function monkey(package,loops)
+function run_monkey()
 {
 	echo ""
 	echo "======Monkey Start======"
 
-	DEBUG_LOOPS=500
-	MONKEY_LOOPS=100000
-	LOOPS=${MONKEY_LOOPS}
-	THROTTLE=100
+	DEBUG_LOOPS=100
+	MONKEY_LOOPS=1000000
+	LOOP=${DEBUG_LOOPS}
+	THROTTLE=200
 	SEED=`date "+%s"`
 	DATE=`date "+%Y%m%d"`
 	DIR=logs/${DATE}
@@ -26,12 +20,11 @@ function monkey(package,loops)
 	echo "Events:" ${LOOPS}
 	echo "Logs:" ${LOG_DIR}
 
+	CMD="adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${LOOP} -pct-touch 60% --pct-motion 20% --pct-anyevent 20% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt"
+	echo "Command: \""${CMD}\"
+	echo ${CMD}>${LOG_DIR}/cmd.txt
 	echo "Monkey running..."
-	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} \ 
-	--throttle ${THROTTLE} -v -v -v ${LOOPS} -pct-touch 60% \ 
-	--pct-motion %20 --pct-anyevent %20 --ignore-security-exceptions \ 
-	--kill-process-after-error --monitor-native-crashes \ 
-	>${LOG_DIR}/monkey.txt
+	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${LOOP} -pct-touch 60% --pct-motion 20% --pct-anyevent 20% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
 	echo "Monkey finished."
 
 	echo "Collecting traces..."
@@ -49,11 +42,15 @@ function monkey(package,loops)
 	echo ""
 }
 
+PACKAGE=com.douban.shuo
+DEVICE=`adb devices | awk 'NR>1 {print $1}'`
+
 echo "$# parameters"
 echo "$@";
 cd ${PWD}
-PACKAGE=com.douban.shuo
-DEVICE=`adb devices | awk 'NR>1 {print $1}'`
 echo "Dir:" ${PWD}
 echo "Device:" ${DEVICE}
-monkey
+for((;;))
+do
+	run_monkey
+done
