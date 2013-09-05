@@ -9,6 +9,18 @@
 ## Author:		zhangxiaoke@douban.com
 ##
 ###############################################################
+function check_device()
+{
+	DEVICE=`adb devices | awk 'NR>1 {print $1}'`
+	if [ -z ${DEVICE} ]; then
+		#echo "No device connected, quit."
+		#exit
+		return 1
+	else
+		return 0
+	fi
+	return ${DEVICE}
+}
 function run_monkey()
 {
 	EVENTS=1000000
@@ -60,27 +72,44 @@ if [ -z $1 ] || [ $1 != "start" ]; then
 fi
 if [ $2 == "debug" ]; then
 	DEBUG=true
-	LOOP=2
-	SLEEP=2
+	LOOP=3
+	SLEEP=5
 fi
 
-DEVICE=`adb devices | awk 'NR>1 {print $1}'`
-if [ -z ${DEVICE} ]; then
-	echo "No device connected, quit."
-	exit
+check_device
+if [ "$?" -eq 1 ]; then
+    echo "No device connected, quit"
+	break
 fi
+
 echo "====== Monkey Script ======"
 echo "Debug:" ${DEBUG}
-echo "Device:" ${DEVICE}
 echo "Package:" ${PACKAGE}
 echo "Loop:" ${LOOP}
 cd ${PWD}
+
 for((i=1;i<=${LOOP};i++));
 do
+	#check_device
+	#if [ "$?" -eq 1 ]; then
+    #	echo "No device connected, quit"
+	#	break
+	#else
+    #	echo "Device:" ${DEVICE}
+	#fi
+
+	check_device
+	while [ "$?" -eq 1 ]; do
+    	echo "No device connected."
+		echo "Will check 5s later, waiting..."
+		sleep 5
+		check_device
+	done
+
 	echo ""
 	echo "Monkey Start, Loop $i"
 	run_monkey
-	echo "Sleep 10s for next monkey loop..."
+	echo "Sleep 10s for next loop..."
 	sleep ${SLEEP}
 	echo "Monkey End, Loop $i"
 	echo ""
