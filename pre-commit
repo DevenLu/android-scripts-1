@@ -1,0 +1,25 @@
+#!/bin/sh
+# 
+# Name: 	Pre-Commit Build Check
+# Author: 	zhangxiaoke@douban.com
+#
+# build project before commit
+# if build failed, commit will be refused.
+
+echo "execute 'mvn clean package', waiting..."
+mvn clean package > /dev/null 2>&1
+result=$?
+if [ $result -ne 0 ] ; then
+	echo "mvn build failed, commit refused."
+	exit 1
+fi
+echo "execute 'gradle clean build', waiting..."
+gradle clean build > /dev/null 2>&1
+result=$?
+if [ $result -ne 0 ] ; then
+	echo "gradle build failed, commit refused."
+	exit 1
+else
+	echo "mvn and gradle build successed, commit accepted."
+fi
+
