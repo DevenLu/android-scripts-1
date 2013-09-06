@@ -41,8 +41,8 @@ function run_monkey()
 
 	CMD="adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} -pct-touch 60% --pct-motion 20% --pct-anyevent 20% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt"
 	echo ${CMD}>${LOG_DIR}/cmd.txt
-	echo "Monkey running..."
 	echo "Monkey command: (\""${CMD}\"\)
+	echo "Monkey running..."
 	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${LOOP} -pct-touch 60% --pct-motion 20% --pct-anyevent 20% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
 	echo "Monkey finished."
 	echo "Collecting traces..."
@@ -70,7 +70,7 @@ if [ -z $1 ] || [ $1 != "start" ]; then
 	echo "Usage: ${PROGNAME} start"
 	exit
 fi
-if [ -n $1 ] && [ $1 == "debug" ]; then
+if [ -n $2 ] && [ $2 == "debug" ]; then
 	DEBUG=true
 	LOOP=3
 	SLEEP=5
