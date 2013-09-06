@@ -1,5 +1,5 @@
-# -*- encoding: utf8 -*-
 #!/bin/bash
+# -*- encoding: utf8 -*-
 ###############################################################
 ##
 ## Name:		Monkey Script
@@ -70,7 +70,7 @@ if [ -z $1 ] || [ $1 != "start" ]; then
 	echo "Usage: ${PROGNAME} start"
 	exit
 fi
-if [ $2 == "debug" ]; then
+if [ -n $1 ] && [ $1 == "debug" ]; then
 	DEBUG=true
 	LOOP=3
 	SLEEP=5
