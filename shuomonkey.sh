@@ -6,6 +6,7 @@
 ## Project:		http://code.dapps.douban.com/zhangxiaoke/android-test
 ## Version:		1.0 2013.09.03
 ## Version:		1.1 2013.09.05
+## Version:		1.2 2013.09.06
 ## Author:		zhangxiaoke@douban.com
 ##
 ###############################################################
@@ -66,11 +67,11 @@ SLEEP=10
 #echo "$# parameters"
 #echo "Parameters:" "$@";
 PROGNAME=`basename $0`
-if [ -z $1 ] || [ $1 != "start" ]; then
+if [ -z "$1" ] || [ "$1" != "start" ]; then
 	echo "Usage: ${PROGNAME} start"
 	exit
 fi
-if [ -n $2 ] && [ $2 == "debug" ]; then
+if [ -n "$2" ] && [ "$2" = "debug" ]; then
 	DEBUG=true
 	LOOP=3
 	SLEEP=5
