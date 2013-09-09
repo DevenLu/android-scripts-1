@@ -24,7 +24,7 @@ function check_device()
 }
 function run_monkey()
 {
-	EVENTS=1000000
+	EVENTS=90000000
 	if [ $DEBUG == true ];then
 		EVENTS=20	
 	fi
@@ -44,7 +44,7 @@ function run_monkey()
 	echo ${CMD}>${LOG_DIR}/cmd.txt
 	echo "Monkey command: (\""${CMD}\"\)
 	echo "Monkey running..."
-	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${LOOP} -pct-touch 60% --pct-motion 20% --pct-anyevent 20% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
+	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${LOOP} -pct-touch 50% --pct-motion 20% --pct-anyevent 30% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
 	echo "Monkey finished."
 	echo "Collecting traces..."
 	adb -s ${DEVICE} shell cat /data/anr/traces.txt>${LOG_DIR}/traces.txt
