@@ -32,6 +32,7 @@ function run_monkey()
 	SEED=`date "+%s"`
 	DATE=`date "+%Y%m%d"`
 	DIR=logs/${DATE}
+	FILE=${DIR}.txt
 	TIME=`date "+%H%M%S"`
 	LOG_DIR=${DIR}/${TIME}
 
@@ -58,8 +59,16 @@ function run_monkey()
 		echo "Collecting bugreport..."
 		adb -s ${DEVICE} bugreport>>${LOG_DIR}/bugreport.txt	
 	fi
-}
+	if [ -e ${LOG_DIR}/bugreport.txt ];then
+		echo "Collecting fatal exceptions..."
+		echo "-------------------------------------------------" >> ${FILE}
+		echo "${TIME} Crashes: " >> ${FILE}
+		grep -inr FATAL -A 3 -B 20 bugreport.txt >> ${FILE}
+		echo " " >> ${FILE} 
+	fi
 
+}
+adb devices
 DEBUG=false
 PACKAGE=com.douban.shuo
 LOOP=10000
