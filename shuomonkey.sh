@@ -59,13 +59,11 @@ function run_monkey()
 		echo "Collecting bugreport..."
 		adb -s ${DEVICE} bugreport>>${LOG_DIR}/bugreport.txt	
 	fi
-	if [ -e ${LOG_DIR}/bugreport.txt ];then
-		echo "Collecting fatal exceptions..."
-		echo "-------------------------------------------------" >> ${FILE}
-		echo "${TIME} Crashes: " >> ${FILE}
-		grep -inr FATAL -A 3 -B 20 bugreport.txt >> ${FILE}
-		echo " " >> ${FILE} 
-	fi
+	echo "Collecting fatal exceptions..."
+	echo "---------------------------" >> ${FILE}
+	echo "${TIME} Crashes: " >> ${FILE}
+	grep  -A 10 -B 3 -inr FATAL ${LOG_DIR} >> ${FILE}
+	echo " " >> ${FILE} 
 
 }
 adb devices
