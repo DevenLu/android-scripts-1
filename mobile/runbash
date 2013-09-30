@@ -1,0 +1,3 @@
+INSTALL_ROOT=/data/data/com.douban.mmonkey/files/bin
+${INSTALL_ROOT}/bash --rcfile ${INSTALL_ROOT}/rc
+

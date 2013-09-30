@@ -1,0 +1,28 @@
+
+INSTALL_ROOT=/data/data/com.douban.mmonkey/files/bin
+
+HISTFILE=${INSTALL_ROOT}/history 
+
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+PS1='\[\e[1;34m\][hari]\$ \[\e[0m\]'
+
+cd ${INSTALL_ROOT}
+
+alias b=${INSTALL_ROOT}/busybox
+alias vim=${INSTALL_ROOT}/busybox vi
+alias cp=${INSTALL_ROOT}/busybox cp
+alias grep=${INSTALL_ROOT}/busybox grep
+alias pgrep=${INSTALL_ROOT}/busybox pgrep
+alias awk=${INSTALL_ROOT}/busybox awk
+alias sed=${INSTALL_ROOT}/busybox sed
+alias sed=${INSTALL_ROOT}/busybox sed
+
+export HOME=${INSTALL_ROOT}
+
