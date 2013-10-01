@@ -46,11 +46,11 @@ function run_monkey()
 	echo "Events:" ${EVENTS}
 	echo "Logs:" ${LOG_DIR}
 
-	CMD="adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} --hprof -pct-touch 20% --pct-motion 30% --pct-majornav 20% --pct-syskeys 5% --pct-nav 10% --pct-appswitch 5% --pct-anyevent 10% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt"
+	CMD="adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} -pct-touch 20% --pct-motion 30% --pct-majornav 20% --pct-syskeys 5% --pct-nav 10% --pct-appswitch 5% --pct-anyevent 10% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt"
 	echo ${CMD}>${LOG_DIR}/cmd.txt
 	echo "Monkey command: (\""${CMD}\"\)
 	echo "Monkey running..."
-	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} --hprof -pct-touch 20% --pct-motion 30% --pct-majornav 20% --pct-syskeys 5% --pct-nav 10%  --pct-appswitch 5% --pct-anyevent 10% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
+	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} -pct-touch 20% --pct-motion 30% --pct-majornav 20% --pct-syskeys 5% --pct-nav 10%  --pct-appswitch 5% --pct-anyevent 10% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
 	echo "Monkey finished."
 	echo "Collecting traces..."
 	adb -s ${DEVICE} shell cat /data/anr/traces.txt>${LOG_DIR}/traces.txt
