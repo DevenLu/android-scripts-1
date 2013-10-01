@@ -59,7 +59,13 @@ function run_monkey()
 	echo "Collecting meminfo..."
 	adb -s ${DEVICE} shell cat /proc/meminfo>${LOG_DIR}/meminfo.txt
 	echo "Collecting dumpsys info..."
-	adb -s ${DEVICE} shell dumpsys meminfo ${PACKAGE}>${LOG_DIR}/dumpmeminfo.txt
+	adb -s ${DEVICE} shell dumpsys meminfo ${PACKAGE}>>${LOG_DIR}/meminfo.txt
+	adb -s ${DEVICE} shell dumpsys meminfo>>${LOG_DIR}/dumpsys.txt
+	adb -s ${DEVICE} shell dumpsys cpuinfo>>${LOG_DIR}/dumpsys.txt
+	adb -s ${DEVICE} shell dumpsys activity>>${LOG_DIR}/dumpsys.txt
+	adb -s ${DEVICE} shell dumpsys battery>>${LOG_DIR}/dumpsys.txt
+	adb -s ${DEVICE} shell dumpsys connectivity>>${LOG_DIR}/dumpsys.txt
+	adb -s ${DEVICE} shell dumpsys wifi>>${LOG_DIR}/dumpsys.txt
 	if [ ${DEBUG} == false ];then
 		echo "Collecting bugreport..."
 		adb -s ${DEVICE} bugreport>>${LOG_DIR}/bugreport.txt	

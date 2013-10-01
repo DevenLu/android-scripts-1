@@ -44,7 +44,13 @@ function run_monkey()
 	echo "Collecting meminfo..."
 	cat /proc/meminfo>${LOG_DIR}/meminfo.txt
 	echo "Collecting dumpsys info..."
-	dumpsys meminfo ${PACKAGE}>${LOG_DIR}/dumpmeminfo.txt
+	dumpsys meminfo ${PACKAGE}>>${LOG_DIR}/meminfo.txt
+	dumpsys meminfo>>${LOG_DIR}/dumpsys.txt
+	dumpsys cpuinfo>>${LOG_DIR}/dumpsys.txt
+	dumpsys activity>>${LOG_DIR}/dumpsys.txt
+	dumpsys battery>>${LOG_DIR}/dumpsys.txt
+	dumpsys connectivity>>${LOG_DIR}/dumpsys.txt
+	dumpsys wifi>>${LOG_DIR}/dumpsys.txt
 	if [ ${DEBUG} == false ];then
 		echo "Collecting bugreport..."
 		bugreport>>${LOG_DIR}/bugreport.txt	
