@@ -22,6 +22,11 @@ function check_device()
 	fi
 	return ${DEVICE}
 }
+function stop_monkey()
+{
+	MONKEY_PID=`adb shell ps | grep monkey | awk '{print $2}'`
+	adb shell kill ${MONKEY_PID}
+}
 function run_monkey()
 {
 	EVENTS=90000000
@@ -41,11 +46,11 @@ function run_monkey()
 	echo "Events:" ${EVENTS}
 	echo "Logs:" ${LOG_DIR}
 
-	CMD="adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} -pct-touch 60% --pct-motion 20% --pct-anyevent 20% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt"
+	CMD="adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} --hprof -pct-touch 20% --pct-motion 30% --pct-majornav 20% --pct-syskeys 5% --pct-nav 10% --pct-appswitch 5% --pct-anyevent 10% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt"
 	echo ${CMD}>${LOG_DIR}/cmd.txt
 	echo "Monkey command: (\""${CMD}\"\)
 	echo "Monkey running..."
-	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${LOOP} -pct-touch 50% --pct-motion 20% --pct-anyevent 30% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
+	adb -s ${DEVICE} shell monkey -p ${PACKAGE} -s ${SEED} --throttle ${THROTTLE} -v -v -v ${EVENTS} --hprof -pct-touch 20% --pct-motion 30% --pct-majornav 20% --pct-syskeys 5% --pct-nav 10%  --pct-appswitch 5% --pct-anyevent 10% --ignore-security-exceptions --kill-process-after-error --monitor-native-crashes >${LOG_DIR}/monkey.txt
 	echo "Monkey finished."
 	echo "Collecting traces..."
 	adb -s ${DEVICE} shell cat /data/anr/traces.txt>${LOG_DIR}/traces.txt
@@ -66,28 +71,43 @@ function run_monkey()
 	echo " " >> ${FILE} 
 
 }
-adb devices
-DEBUG=false
-PACKAGE=com.douban.shuo
-LOOP=10000
-SLEEP=10
+
 #echo "$# parameters"
 #echo "Parameters:" "$@";
 PROGNAME=`basename $0`
-if [ -z "$1" ] || [ "$1" != "start" ]; then
-	echo "Usage: ${PROGNAME} start"
+
+if [ -z "$1" ]; then
+	echo "Usage: ${PROGNAME} start/stop [debug]"
 	exit
 fi
-if [ -n "$2" ] && [ "$2" = "debug" ]; then
-	DEBUG=true
-	LOOP=3
-	SLEEP=5
+
+if [ "$1" == "stop" ]; then
+	stop_monkey
+	echo "monkey is stopped."
+	exit
 fi
 
+if [ "$1" != "start" ]; then
+	echo "Usage: ${PROGNAME} start/stop [debug]"
+	exit
+fi
+
+adb devices
 check_device
 if [ "$?" -eq 1 ]; then
     echo "No device connected, quit"
 	break
+fi
+
+DEBUG=false
+PACKAGE=com.douban.shuo
+LOOP=90000000
+SLEEP=10
+
+if [ -n "$2" ] && [ "$2" = "debug" ]; then
+	DEBUG=true
+	LOOP=3
+	SLEEP=5
 fi
 
 echo "====== Monkey Script ======"
